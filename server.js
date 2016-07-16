@@ -1,10 +1,10 @@
-// var fs = require('fs');
+var fs = require('fs');
 var http = require('http');
 
 // Serve client side statically
 var express = require('express');
 var app = express();
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/'));
 var request = require('request')
 var rp = require('request-promise')
 
@@ -41,5 +41,11 @@ console.log('HTTP on port 9000');
 var url = 'http://concerts.livenation.com/microsite/settlement'
 rp.get(url)
 .then(function(response) {
+  var fileName = './data.html';
+  var stream = fs.createWriteStream(fileName);
+  stream.once('open', function(fd) {
+    stream.end(response);
+  });
   console.log(response);
 })
+
