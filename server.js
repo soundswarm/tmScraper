@@ -38,14 +38,33 @@ var server = http.createServer(app);
 server.listen(9000);
 console.log('HTTP on port 9000');
 
-var url = 'http://concerts.livenation.com/microsite/settlement'
-rp.get(url)
-.then(function(response) {
+// var url = 'http://concerts.livenation.com/microsite/settlement'
+// rp.get(url)
+// .then(function(response) {
+//   var fileName = './data.html';
+//   var stream = fs.createWriteStream(fileName);
+//   stream.once('open', function(fd) {
+//     stream.end(response);
+//   });
+// })
+
+var createHtml = function(data) {
   var fileName = './data.html';
   var stream = fs.createWriteStream(fileName);
   stream.once('open', function(fd) {
-    stream.end(response);
+    stream.end(data);
   });
-  console.log(response);
+}
+rp.get('http://concerts.livenation.com/json/search/microsite/event/national?site_tmpl=STYLE_C&page_id=721')
+.then(function(tmResponse) {
+  var data = JSON.parse(tmResponse)
+  var docs = data.response.docs
+  var events = docs.map(function(event) {
+    return event.EventName
+
+  })
+  console.log(events);
+  // createHtml(names)
+
 })
 
