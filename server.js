@@ -57,10 +57,11 @@ var createHtml = function(data) {
 }
 rp.get('http://concerts.livenation.com/json/search/microsite/event/national?site_tmpl=STYLE_C&page_id=721')
 .then(function(tmResponse) {
-  var data = JSON.parse(tmResponse)
-  var docs = data.response.docs
+  var data = JSON.parse(tmResponse);
+  var docs = data.response.docs;
   var events = docs.map(function(event) {
-    return event.EventName
+    var soldOut = {eventName: event.EventName, onSale: event.EventInternetRelease, Venue: event.VenueCityState};
+    return soldOut;
 
   })
   console.log(events);
